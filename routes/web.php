@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 //rotas de series
@@ -23,8 +24,38 @@ Route::post('/entrar', 'EntrarController@entrar');
 Route::get('/registrar', 'RegistroController@create');
 Route::post('/registrar', 'RegistroController@store');
 
+//logout
 Route::get('/sair', function(){
     \Illuminate\Support\Facades\Auth::logout();
     return redirect('/entrar');
 });
+
+//roda de email
+Route::get('/visualizando-email', function(){
+    return new App\Mail\NovaSerie(
+        "Arrow",
+        "Qtd.Temporadas",
+        "Qtd.Episodios"
+    );
+});
+
+Route::get('/enviando-email', function(){
+    $email = new \App\Mail\NovaSerie(
+        "Arrow",
+        5,
+        10
+    );
+
+    $email->subject = 'Nova Série Adicionada';
+
+    $user = (object)[
+        'email' => 'iprates22@gmail.com',
+        'name' => 'igor'
+    ];
+
+    Mail::to($user)->send($email);
+    return "Email enviado";
+});
+
+
 

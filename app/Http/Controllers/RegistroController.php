@@ -24,7 +24,4 @@ class RegistroController extends Controller
 
         return redirect()->route('series.index');
     }
-
-
-
 }
